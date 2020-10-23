@@ -59,12 +59,12 @@
                                     ${{ item.productPrice }}
                                 </div>
                             </div>
-                            <button class="drop__cancel fas fa-times-circle" name="remove"></button>
+                            <button class="drop__cancel fas fa-times-circle" name="remove" @click="$emit('remove-from-basket', item.productId)"></button>
                         </div>
                     </div>
                     <div class="drop__total">
                         <div>TOTAL</div>
-                        <div id="total-sum"></div>
+                        <div id="total-sum">${{ goodCost }}</div>
                     </div>
                     <a href="checkout.html" class="drop__link">Checkout</a>
                     <a href="#" class="drop__link">Go to cart</a>
@@ -77,6 +77,6 @@
 
 <script>
 export default {
-    props: ['items']
+    props: ['items', 'goodCost']
 }
 </script>

@@ -2,7 +2,7 @@
   <div>
     <div class="page" id="page">
         <!-- HEADER -->
-        <Header :items="this.itemsBasket"/>
+        <Header :items="this.itemsBasket" :goodCost="this.goodCost" @remove-from-basket="removeFromBasket"/>
         <!-- NAV -->
         <Nav />
         <!-- PROMO -->
@@ -69,6 +69,17 @@ export default {
                 this.itemsBasket.push(Object.assign({}, item, { amount: 1 }));
             } else {
                 find.amount++;
+            }
+
+            this.calculateGoodsCost();
+        },
+        removeFromBasket(id) {
+            let find = this.itemsBasket.find(el => el.productId == id);
+                    
+            if (find.amount > 1) {
+                find.amount--;
+            } else {
+                this.itemsBasket.splice(this.itemsBasket.indexOf(find), 1);
             }
 
             this.calculateGoodsCost();

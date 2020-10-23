@@ -34,7 +34,8 @@ export default {
         return {
             items: [],
             // url: 'https://raw.githubusercontent.com/kpe4et/static/master/JSON/catalog.json'
-            url: '/api/catalog'
+            url: '/api/catalog' //for Dev
+            // url: '/catalog' //for Build
         }
     },
     mounted() {

@@ -2,7 +2,7 @@
   <div>
     <div class="page" id="page">
         <!-- HEADER -->
-        <Header />
+        <Header :items="this.itemsBasket"/>
         <!-- NAV -->
         <Nav />
         <!-- PROMO -->
@@ -10,7 +10,7 @@
         <!-- PRODUCTS -->
         <SectionProducts />
         <!-- CATALOG -->
-        <SectionCatalog />
+        <SectionCatalog @add-to-basket="add"/>
         <!-- OFFER -->
         <SectionOffer />
         <!-- SUBSCRIBE -->
@@ -39,7 +39,15 @@ import Footer from '@/components/diff/Footer.vue'
 import PopUp from '@/components/diff/PopUp.vue'
 
 export default {
-    
+    data() {
+        return {
+            item: [],
+            itemsBasket: [],
+            url: 'https://raw.githubusercontent.com/kellolo/static/master/JSON/basket.json',
+            showBasket: false,
+            goodCost: 0
+        }
+    },
     name: 'Index',
     components: { 
         Header,
@@ -52,9 +60,32 @@ export default {
         Contacts,
         Footer,
         PopUp
+    },
+    methods: {
+        add(item) {
+            this.item = item;
+            console.log(item);
+        },
+        _get(url) {
+            return fetch(url)
+                .then(data => data.json())
+        },
+        calculateGoodsCost () {
+            this.goodCost = 0;
+            this.itemsBasket.forEach(item => {
+                this.goodCost += item.productPrice * item.amount;
+            });
+        }
+    },
+    mounted() {
+        this._get(this.url)
+            .then(items => {
+                this.itemsBasket = items.content;
+                this.calculateGoodsCost();
+                console.log(this.itemsBasket);
+                console.log(this.goodCost);
+            })
     }
-//   ,
-//   components: {
-//   }
 }
+
 </script>

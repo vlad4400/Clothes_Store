@@ -10,7 +10,7 @@
         <!-- PRODUCTS -->
         <SectionProducts />
         <!-- CATALOG -->
-        <SectionCatalog @add-to-basket="add"/>
+        <SectionCatalog @add-to-basket="addToBasket"/>
         <!-- OFFER -->
         <SectionOffer />
         <!-- SUBSCRIBE -->
@@ -41,7 +41,7 @@ import PopUp from '@/components/diff/PopUp.vue'
 export default {
     data() {
         return {
-            item: [],
+            // item: [],
             itemsBasket: [],
             url: 'https://raw.githubusercontent.com/kellolo/static/master/JSON/basket.json',
             showBasket: false,
@@ -62,9 +62,16 @@ export default {
         PopUp
     },
     methods: {
-        add(item) {
-            this.item = item;
-            console.log(item);
+        addToBasket(item) {
+            let find = this.itemsBasket.find(el => el.productId == item.productId);
+
+            if (!find) {
+                this.itemsBasket.push(Object.assign({}, item, { amount: 1 }));
+            } else {
+                find.amount++;
+            }
+
+            this.calculateGoodsCost();
         },
         _get(url) {
             return fetch(url)
@@ -82,8 +89,6 @@ export default {
             .then(items => {
                 this.itemsBasket = items.content;
                 this.calculateGoodsCost();
-                console.log(this.itemsBasket);
-                console.log(this.goodCost);
             })
     }
 }

@@ -4,7 +4,7 @@ const fs = require('fs');
 const server = express();
 server.use(express.json());
 
-server.get('/', express.static('./public'));
+server.use('/', express.static('./public'));
 
 server.get('/catalog', (req, res) => {
     fs.readFile('./server/db/catalog.json', 'utf-8', (err, data) => {

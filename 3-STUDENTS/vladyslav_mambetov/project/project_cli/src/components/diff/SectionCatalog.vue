@@ -33,7 +33,8 @@ export default {
     data() {
         return {
             items: [],
-            url: 'https://raw.githubusercontent.com/kpe4et/static/master/JSON/catalog.json'
+            // url: 'https://raw.githubusercontent.com/kpe4et/static/master/JSON/catalog.json'
+            url: '/api/catalog'
         }
     },
     mounted() {

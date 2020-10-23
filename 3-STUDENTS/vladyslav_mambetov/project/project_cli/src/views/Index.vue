@@ -41,9 +41,9 @@ import PopUp from '@/components/diff/PopUp.vue'
 export default {
     data() {
         return {
-            // item: [],
             itemsBasket: [],
-            url: 'https://raw.githubusercontent.com/kellolo/static/master/JSON/basket.json',
+            // url: 'https://raw.githubusercontent.com/kellolo/static/master/JSON/basket.json',
+            url: '/api/basket',
             showBasket: false,
             goodCost: 0
         }

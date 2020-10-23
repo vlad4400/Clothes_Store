@@ -38,9 +38,9 @@
         <div class="header__right">
             <div class="header__bucket">
                 <div class="header__count" id="basket-count"></div>
-                <button id="basket-toggler"><img class="header__cart" src="../../../src/assets/imgs/cart.png" alt="cart"></button>
+                <button id="basket-toggler" @click="showBasket = !showBasket"><img class="header__cart" src="../../../src/assets/imgs/cart.png" alt="cart"></button>
                 <!-- DROP CART -->
-                <div class="drop" id="basket">
+                <div class="drop" id="basket" v-show="showBasket">
                     <div id="basket-items">
                         <div v-for="item of items" class="drop__box" :key="item.productId">
                             <a class="drop__img" href="single.html"><img :src="item.productImg" alt="#" width="72" height="85"></a>
@@ -77,6 +77,11 @@
 
 <script>
 export default {
-    props: ['items', 'goodCost']
+    props: ['items', 'goodCost'],
+    data() {
+        return {
+            showBasket: false
+        }
+    }
 }
 </script>

@@ -2,7 +2,7 @@
   <div>
     <div class="page" id="page">
         <!-- HEADER -->
-        <Header :items="this.itemsBasket" :goodCost="this.goodCost" @remove-from-basket="removeFromBasket"/>
+        <Header />
         <!-- NAV -->
         <Nav />
         <!-- PROMO -->
@@ -10,7 +10,7 @@
         <!-- PRODUCTS -->
         <SectionProducts />
         <!-- CATALOG -->
-        <SectionCatalog @add-to-basket="addToBasket"/>
+        <SectionCatalog />
         <!-- OFFER -->
         <SectionOffer />
         <!-- SUBSCRIBE -->
@@ -41,12 +41,7 @@ import PopUp from '@/components/diff/PopUp.vue'
 export default {
     data() {
         return {
-            itemsBasket: [],
-            // url: 'https://raw.githubusercontent.com/kellolo/static/master/JSON/basket.json',
-            url: '/api/basket', //for Dev
-            // url: '/basket', //for Build
-            showBasket: false,
-            goodCost: 0
+            showBasket: false
         }
     },
     name: 'Index',
@@ -61,47 +56,6 @@ export default {
         Contacts,
         Footer,
         PopUp
-    },
-    methods: {
-        addToBasket(item) {
-            let find = this.itemsBasket.find(el => el.productId == item.productId);
-
-            if (!find) {
-                this.itemsBasket.push(Object.assign({}, item, { amount: 1 }));
-            } else {
-                find.amount++;
-            }
-
-            this.calculateGoodsCost();
-        },
-        removeFromBasket(id) {
-            let find = this.itemsBasket.find(el => el.productId == id);
-                    
-            if (find.amount > 1) {
-                find.amount--;
-            } else {
-                this.itemsBasket.splice(this.itemsBasket.indexOf(find), 1);
-            }
-
-            this.calculateGoodsCost();
-        },
-        _get(url) {
-            return fetch(url)
-                .then(data => data.json())
-        },
-        calculateGoodsCost () {
-            this.goodCost = 0;
-            this.itemsBasket.forEach(item => {
-                this.goodCost += item.productPrice * item.amount;
-            });
-        }
-    },
-    mounted() {
-        this._get(this.url)
-            .then(items => {
-                this.itemsBasket = items.content;
-                this.calculateGoodsCost();
-            })
     }
 }
 

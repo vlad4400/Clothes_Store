@@ -42,7 +42,7 @@
                 <!-- DROP CART -->
                 <div class="drop" id="basket" v-show="showBasket">
                     <div id="basket-items">
-                        <div v-for="item of items" class="drop__box" :key="item.productId">
+                        <div v-for="item of itemsBasket" class="drop__box" :key="item.productId">
                             <a class="drop__img" href="single.html"><img :src="item.productImg" alt="#" width="72" height="85"></a>
                             <div class="drop__info">
                                 <a href="single.html" class="drop__title">
@@ -59,7 +59,7 @@
                                     ${{ item.productPrice }}
                                 </div>
                             </div>
-                            <button class="drop__cancel fas fa-times-circle" name="remove" @click="$emit('remove-from-basket', item.productId)"></button>
+                            <button class="drop__cancel fas fa-times-circle" name="remove" @click="removeItemFromBasket(item.productId)"></button>
                         </div>
                     </div>
                     <div class="drop__total">
@@ -76,12 +76,21 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex'
 export default {
-    props: ['items', 'goodCost'],
     data() {
         return {
             showBasket: false
         }
+    },
+    methods: {
+        ...mapActions(['getItemsBasket', 'removeItemFromBasket'])
+    },
+    computed: {
+        ...mapGetters(['itemsBasket', 'goodCost'])
+    },
+    mounted() {
+        this.getItemsBasket();
     }
 }
 </script>

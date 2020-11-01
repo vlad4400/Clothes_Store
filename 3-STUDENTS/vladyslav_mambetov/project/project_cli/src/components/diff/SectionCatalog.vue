@@ -3,11 +3,11 @@
         <h3 class="catalog__header">Featured Items</h3>
         <p class="catalog__header_text">Shop for items based on what we featured in this week</p>
         <div class="catalog__main" id="catalog">
-            <div v-for="item of items" class="catalog__item" :key="item.productId">
+            <div v-for="item of itemsCatalog" class="catalog__item" :key="item.productId">
                 <button 
                     class="catalog__bucket" 
                     name="add"
-                    @click="$emit('add-to-basket', item)"
+                    @click="addItemToBasket(item)"
                 >
                     <img class="catalog__hidden_img" 
                     src="https://raw.githubusercontent.com/Eliseev88/geekbrains/3fdc76c4d5e84b1398b168e6239b8651dce01f6f/products/Forma_1_copy.svg" alt="#">
@@ -29,26 +29,16 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex'
 export default {
-    data() {
-        return {
-            items: [],
-            // url: 'https://raw.githubusercontent.com/kpe4et/static/master/JSON/catalog.json'
-            url: '/api/catalog' //for Dev
-            // url: '/catalog' //for Build
-        }
+    methods: {
+        ...mapActions(['getItemsCatalog', 'addItemToBasket'])
+    },
+    computed: {
+        ...mapGetters(['itemsCatalog'])
     },
     mounted() {
-        this.get(this.url)
-            .then(items => {
-                this.items = items;
-            })
-    },
-    methods: {
-        get(url) {
-            return fetch(url)
-                .then(data => data.json())
-        }
+        this.getItemsCatalog()
     }
 }
 </script>

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Axios from '../../utils/axios'  //PSEUDO-axios
 
 Vue.use(Vuex)
 
@@ -23,32 +24,64 @@ export default new Vuex.Store({
       let find = state.itemsBasket.find(el => el.productId == item.productId);
 
       if (!find) {
-          state.itemsBasket.push(Object.assign({}, item, { amount: 1 }));
+          let newItem = Object.assign({}, item, { amount: 1 })
+
+          Axios.post(`${URL_BASKET}`, newItem)
+          .then(status => {
+            if (status) {
+              state.itemsBasket.push(newItem);
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          })
       } else {
-          find.amount++;
+          Axios.put(`${URL_BASKET}/${find.productId}`, 1)
+          .then(status => {
+            if (status) {
+              find.amount++;
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          })
       }
     },
     removeItemFromBasket: (state, id) => {
       let find = state.itemsBasket.find(el => el.productId == id);
                     
       if (find.amount > 1) {
-          find.amount--;
+        Axios.put(`${URL_BASKET}/${find.productId}`, -1)
+        .then(status => {
+          if (status) {
+            find.amount--;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        })
       } else {
-          state.itemsBasket.splice(state.itemsBasket.indexOf(find), 1);
+        Axios.delete(`${URL_BASKET}/${find.productId}`)
+        .then(status => {
+          if (status) {
+            state.itemsBasket.splice(state.itemsBasket.indexOf(find), 1);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        })
       }
     }
   },
   actions: {
     getItemsCatalog({commit}) {
-      return fetch(URL_CATALOG)
-        .then(data => data.json())
+      return Axios.get(URL_CATALOG)
         .then(data => {
           commit('setItemsCatalog', data);
         });
     },
     getItemsBasket({commit}) {
-      return fetch(URL_BASKET)
-        .then(data => data.json())
+      return Axios.get(URL_BASKET)
         .then(data => {
           commit('setItemsBasket', data.content);
         });
